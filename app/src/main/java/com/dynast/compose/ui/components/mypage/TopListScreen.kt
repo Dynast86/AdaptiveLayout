@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -32,7 +33,7 @@ fun TopList(
             TopListItem(modifier = modifier, title = "출석현황", image = Icons.Filled.Person, onClicked = onClicked)
             TopListItem(modifier = modifier, title = "이용방법", image = Icons.Filled.Notifications, onClicked = onClicked)
         }
-        Divider(thickness = 0.5.dp)
+        Divider(thickness = Dp.Hairline)
     }
 }
 

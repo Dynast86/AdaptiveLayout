@@ -26,7 +26,9 @@ fun LoginSheet(
                 onLoginClicked = {},
                 onJoinClicked = {}
             )
-        }) { }
+        },
+        content = {}
+    )
 }
 
 @Composable

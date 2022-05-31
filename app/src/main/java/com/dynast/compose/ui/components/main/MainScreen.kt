@@ -104,8 +104,9 @@ fun BottomSheet(state: ModalBottomSheetState) {
                     )
                 }
             }
-        }
-    ) {}
+        },
+        content = {}
+    )
 }
 
 val bottomShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
