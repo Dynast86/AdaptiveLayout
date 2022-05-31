@@ -32,7 +32,7 @@ fun NavBar(
                 selected = currentRoute == item.route,
                 onClick = {
                     if (item == BottomItems.More
-//                        || item == BottomItems.MyClass
+                        || item == BottomItems.MyClass
                     ) {
                         onClick(item)
                     } else {

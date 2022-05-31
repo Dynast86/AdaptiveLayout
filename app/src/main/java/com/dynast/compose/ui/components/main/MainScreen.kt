@@ -89,7 +89,7 @@ fun BottomSheet(state: ModalBottomSheetState) {
 
     ModalBottomSheetLayout(
         sheetState = state,
-        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        sheetShape = bottomShape,
         sheetContent = {
             LazyColumn {
                 items(3) {
@@ -107,3 +107,5 @@ fun BottomSheet(state: ModalBottomSheetState) {
         }
     ) {}
 }
+
+val bottomShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)

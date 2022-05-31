@@ -2,10 +2,7 @@ package com.dynast.compose.ui.components.main
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,8 +19,7 @@ fun LoginSheet(
 ) {
     ModalBottomSheetLayout(
         sheetState = state,
-        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-        sheetBackgroundColor = MaterialTheme.colorScheme.background,
+        sheetShape = bottomShape,
         sheetContent = {
             LoginSheetItem(
                 modifier = modifier,
@@ -50,10 +46,10 @@ fun LoginSheetItem(
         }
         Text(text = "다양한 서비스를 누려보세요.")
         Spacer(Modifier.height(16.dp))
-        Button(modifier = modifier.fillMaxWidth(), onClick = onLoginClicked) {
+        OutlinedButton(modifier = modifier.fillMaxWidth(), onClick = onLoginClicked) {
             Text(text = "로그인")
         }
-        Button(modifier = modifier.fillMaxWidth(), onClick = onJoinClicked) {
+        OutlinedButton(modifier = modifier.fillMaxWidth(), onClick = onJoinClicked) {
             Text(text = "에듀윌 가입하고 합격하기")
         }
     }

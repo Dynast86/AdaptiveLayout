@@ -1,8 +1,6 @@
 package com.dynast.compose.ui.components.nav
 
-import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -12,6 +10,7 @@ import com.dynast.compose.BottomItems
 import com.dynast.compose.MainViewModel
 import com.dynast.compose.favorite.FavoriteScreen
 import com.dynast.compose.myclass.MyClassScreen
+import com.dynast.compose.mypage.MyPageScreen
 
 @Composable
 fun NavGraph(
@@ -31,7 +30,8 @@ fun NavGraph(
 
         }
         composable(BottomItems.MyPage.route) {
-
+            val parentViewModel = hiltViewModel<MainViewModel>(it)
+            MyPageScreen(parentViewModel, modifier = modifier)
         }
         composable(BottomItems.More.route) {
 
