@@ -1,0 +1,40 @@
+package com.dynast.compose.ui.components.nav
+
+import androidx.compose.foundation.clickable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.dynast.compose.BottomItems
+import com.dynast.compose.MainViewModel
+import com.dynast.compose.favorite.FavoriteScreen
+import com.dynast.compose.myclass.MyClassScreen
+
+@Composable
+fun NavGraph(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
+    NavHost(navController = navController, startDestination = BottomItems.Free.route, modifier = modifier) {
+        composable(BottomItems.MyClass.route) {
+            val mainViewModel = hiltViewModel<MainViewModel>()
+            MyClassScreen(mainViewModel)
+        }
+        composable(BottomItems.Solve.route) {
+            val parentViewModel = hiltViewModel<MainViewModel>(it)
+            FavoriteScreen(parentViewModel, modifier = modifier)
+        }
+        composable(BottomItems.Free.route) {
+
+        }
+        composable(BottomItems.MyPage.route) {
+
+        }
+        composable(BottomItems.More.route) {
+
+        }
+    }
+}
