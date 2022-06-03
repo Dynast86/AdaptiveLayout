@@ -26,8 +26,10 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.dynast.compose.BottomItems
+import com.dynast.compose.MainViewModel
 import com.dynast.compose.items
 import com.dynast.compose.railItem
+import com.dynast.compose.ui.components.TopAppBarScreen
 import com.dynast.compose.ui.components.nav.NavBar
 import com.dynast.compose.ui.components.nav.NavGraph
 import com.dynast.compose.ui.components.nav.NavRail
@@ -35,7 +37,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun MainScreen(windowSizeClass: WindowSizeClass) {
+fun MainScreen(
+    viewModel: MainViewModel,
+    windowSizeClass: WindowSizeClass
+) {
 
     val navController = rememberNavController()
     val snackBarHostState = remember { SnackbarHostState() }
@@ -48,6 +53,7 @@ fun MainScreen(windowSizeClass: WindowSizeClass) {
     )
 
     Scaffold(
+        topBar = { TopAppBarScreen() },
         snackbarHost = { SnackbarHost(snackBarHostState) },
         bottomBar = {
             if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
@@ -61,7 +67,7 @@ fun MainScreen(windowSizeClass: WindowSizeClass) {
                         }
                         else -> Unit
                     }
-                })
+                }, viewModel = viewModel)
             }
         }) { paddingContent ->
         var padding: Dp = paddingContent.calculateStartPadding(LayoutDirection.Ltr)
@@ -74,7 +80,13 @@ fun MainScreen(windowSizeClass: WindowSizeClass) {
         }
         NavGraph(
             navController = navController, modifier = Modifier
-                .windowInsetsPadding(WindowInsets(left = padding))
+                .windowInsetsPadding(
+                    WindowInsets(
+                        left = padding,
+                        top = paddingContent.calculateTopPadding(),
+                        bottom = paddingContent.calculateBottomPadding()
+                    )
+                )
                 .fillMaxSize()
         )
     }

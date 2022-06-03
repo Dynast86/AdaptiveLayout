@@ -12,13 +12,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.dynast.compose.BottomItems
+import com.dynast.compose.MainViewModel
 import com.dynast.compose.items
 
 @Composable
 fun NavBar(
     navController: NavController,
     items: List<BottomItems>,
-    onClick: (BottomItems) -> Unit
+    onClick: (BottomItems) -> Unit,
+    viewModel: MainViewModel
 ) {
     NavigationBar(
         modifier = Modifier.windowInsetsPadding(
@@ -37,7 +39,6 @@ fun NavBar(
                         onClick(item)
                     } else {
                         navController.navigate(item.route) {
-
                             navController.graph.startDestinationRoute?.let { screen_route ->
                                 popUpTo(screen_route) {
                                     saveState = true

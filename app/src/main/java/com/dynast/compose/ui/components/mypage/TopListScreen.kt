@@ -8,9 +8,11 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -23,15 +25,24 @@ import androidx.compose.ui.unit.dp
 fun TopList(
     onClicked: (String) -> Unit
 ) {
+    val scope = rememberCoroutineScope()
+
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth()) {
+            var notifyCnt by remember { mutableStateOf(1) }
+            var notifyCnt2 by remember { mutableStateOf(10) }
+            var notifyCnt3 by remember { mutableStateOf(100) }
             val modifier = Modifier
                 .weight(1F)
                 .padding()
-            TopListItem(modifier = modifier, title = "공지사항", image = Icons.Filled.Favorite, onClicked = onClicked)
-            TopListItem(modifier = modifier, title = "업데이트 강좌", image = Icons.Filled.Edit, onClicked = onClicked, column = Modifier.padding(top = 16.dp, bottom = 16.dp))
-            TopListItem(modifier = modifier, title = "출석현황", image = Icons.Filled.Person, onClicked = onClicked)
-            TopListItem(modifier = modifier, title = "이용방법", image = Icons.Filled.Notifications, onClicked = onClicked)
+            TopListItem(modifier = modifier, title = "공지사항", image = Icons.Filled.Favorite, notify = notifyCnt, onClicked = {
+                notifyCnt = 0
+            })
+            TopListItem(modifier = modifier, title = "업데이트 강좌", image = Icons.Filled.Edit, notify = notifyCnt2, onClicked = {
+                notifyCnt2 = 0
+            }, column = Modifier.padding(top = 16.dp, bottom = 16.dp))
+            TopListItem(modifier = modifier, title = "출석현황", image = Icons.Filled.Person, notify = 0, onClicked = onClicked)
+            TopListItem(modifier = modifier, title = "이용방법", image = Icons.Filled.Notifications, notify = notifyCnt3, onClicked = onClicked)
         }
         Divider(thickness = Dp.Hairline)
     }
@@ -43,6 +54,7 @@ fun TopListItem(
     title: String,
     image: ImageVector,
     column: Modifier = Modifier.padding(16.dp),
+    notify: Int? = null,
     onClicked: (String) -> Unit
 ) {
     Box(
@@ -52,7 +64,30 @@ fun TopListItem(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = column
         ) {
-            Image(modifier = Modifier.padding(8.dp), painter = rememberVectorPainter(image = image), contentDescription = title)
+            BadgedBox(
+                modifier = Modifier.padding(8.dp),
+                badge = {
+                    notify?.apply {
+                        when {
+                            notify > 99 -> {
+                                Badge(content = { Text(text = "99+") })
+                            }
+                            notify in 1..99 -> {
+                                Badge(content = { Text(text = notify.toString()) })
+                            }
+                            else -> {
+                                Badge()
+                            }
+                        }
+                    }
+                },
+                content = {
+                    Image(painter = rememberVectorPainter(image = image), contentDescription = title)
+                }
+            )
+//            Box(modifier = Modifier.padding(8.dp)) {
+//                Image(painter = rememberVectorPainter(image = image), contentDescription = title)
+//            }
             Text(text = title)
         }
     }

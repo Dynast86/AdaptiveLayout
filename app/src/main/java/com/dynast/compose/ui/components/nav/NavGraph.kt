@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import com.dynast.compose.BottomItems
 import com.dynast.compose.MainViewModel
 import com.dynast.compose.favorite.FavoriteScreen
+import com.dynast.compose.free.FreeScreen
 import com.dynast.compose.myclass.MyClassScreen
 import com.dynast.compose.mypage.MyPageScreen
 
@@ -27,7 +28,7 @@ fun NavGraph(
             FavoriteScreen(parentViewModel, modifier = modifier)
         }
         composable(BottomItems.Free.route) {
-
+            FreeScreen(modifier = modifier)
         }
         composable(BottomItems.MyPage.route) {
             val parentViewModel = hiltViewModel<MainViewModel>(it)
