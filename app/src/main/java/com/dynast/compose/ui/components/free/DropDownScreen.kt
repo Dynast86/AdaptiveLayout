@@ -22,7 +22,7 @@ fun DropDownScreen(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded },
         modifier = Modifier
-            .padding(top = 16.dp, bottom = 8.dp)
+            .padding(top = 16.dp, bottom = 8.dp, start = 8.dp, end = 8.dp)
             .fillMaxWidth()
     ) {
         OutlinedTextField(
@@ -57,6 +57,6 @@ fun DropDownScreen(
 @Composable
 fun DropDownScreenPreview() {
     ComposeTheme {
-        DropDownScreen()
+        DropDownScreen(modifier = Modifier.fillMaxWidth())
     }
 }
