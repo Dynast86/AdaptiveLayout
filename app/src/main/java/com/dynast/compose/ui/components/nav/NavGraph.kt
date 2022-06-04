@@ -32,7 +32,7 @@ fun NavGraph(
         }
         composable(BottomItems.MyPage.route) {
             val parentViewModel = hiltViewModel<MainViewModel>(it)
-            MyPageScreen(parentViewModel, modifier = modifier)
+            MyPageScreen(parentViewModel)
         }
         composable(BottomItems.More.route) {
 

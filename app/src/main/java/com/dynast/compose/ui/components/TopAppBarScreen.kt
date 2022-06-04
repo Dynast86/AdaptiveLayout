@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,14 +24,17 @@ import com.dynast.compose.ui.theme.ComposeTheme
 
 @Composable
 fun TopAppBarScreen(
+    viewModel: MainViewModel = hiltViewModel()
 ) {
     var functionalityNotAvailablePopupShown by remember { mutableStateOf(false) }
     if (functionalityNotAvailablePopupShown) {
         FunctionalityNotAvailablePopup { functionalityNotAvailablePopupShown = false }
     }
 
+    val title = viewModel.title.observeAsState()
+
     SmallTopAppBar(
-        title = { Text(text = "무료특강") },
+        title = { title.value?.let { Text(text = it) } },
         navigationIcon = {
             IconButton(
                 onClick = { /* "Open nav drawer" */ }

@@ -39,6 +39,7 @@ fun NavBar(
                         onClick(item)
                     } else {
                         navController.navigate(item.route) {
+                            viewModel.setTopBarTitle(item.title)
                             navController.graph.startDestinationRoute?.let { screen_route ->
                                 popUpTo(screen_route) {
                                     saveState = true

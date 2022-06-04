@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dynast.compose.MainViewModel
 import com.dynast.compose.ui.components.mypage.CourseScreen
 import com.dynast.compose.ui.components.mypage.LoginScreen
@@ -16,8 +17,7 @@ import com.dynast.compose.ui.theme.ComposeTheme
 
 @Composable
 fun MyPageScreen(
-    mainViewModel: MainViewModel,
-    modifier: Modifier = Modifier
+    viewModel: MainViewModel = viewModel()
 ) {
     val scrollState = rememberScrollState()
 
