@@ -16,15 +16,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.dynast.compose.extension.UiAlertPopup
+import com.dynast.compose.ui.free.CourseCardData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CourseCard() {
+fun CourseCard(
+    item: CourseCardData? = null
+) {
     var alertPopupShown by remember { mutableStateOf(false) }
     if (alertPopupShown) {
-        UiAlertPopup(title = "수강신청 완료", content = "에듀윌과 합격하세요!\n무료특강 수강 신청이 완료 되었습니다.", onDismiss = {
-            alertPopupShown = false
-        }) {
+        UiAlertPopup(
+            title = "수강신청 완료",
+            content = "에듀윌과 합격하세요!\n무료특강 수강 신청이 완료 되었습니다.",
+            onDismiss = {
+                alertPopupShown = false
+            }) {
             alertPopupShown = false
         }
     }

@@ -1,29 +1,42 @@
 package com.dynast.compose.ui.components.main
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.dynast.compose.MainViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LoginSheet(
     state: ModalBottomSheetState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: MainViewModel = hiltViewModel()
 ) {
+    val scope = rememberCoroutineScope()
+
     ModalBottomSheetLayout(
         sheetState = state,
         sheetShape = bottomShape,
         sheetContent = {
             LoginSheetItem(
                 modifier = modifier,
-                onLoginClicked = {},
+                onLoginClicked = {
+                    scope.launch {
+                        viewModel.setLogin()
+                        state.hide()
+                    }
+                },
                 onJoinClicked = {}
             )
         },

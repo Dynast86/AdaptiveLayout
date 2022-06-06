@@ -8,10 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.dynast.compose.BottomItems
 import com.dynast.compose.MainViewModel
-import com.dynast.compose.favorite.FavoriteScreen
-import com.dynast.compose.free.FreeScreen
-import com.dynast.compose.myclass.MyClassScreen
-import com.dynast.compose.mypage.MyPageScreen
+import com.dynast.compose.ui.favorite.FavoriteScreen
+import com.dynast.compose.ui.free.FreeScreen
+import com.dynast.compose.ui.myclass.MyClassScreen
+import com.dynast.compose.ui.mypage.MyPageScreen
 
 @Composable
 fun NavGraph(

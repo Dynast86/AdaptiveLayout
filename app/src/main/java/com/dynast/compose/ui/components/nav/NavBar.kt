@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.dynast.compose.BottomItems
@@ -20,8 +21,10 @@ fun NavBar(
     navController: NavController,
     items: List<BottomItems>,
     onClick: (BottomItems) -> Unit,
-    viewModel: MainViewModel
+    viewModel: MainViewModel = hiltViewModel()
 ) {
+    val loginState = viewModel.loginState.collectAsState()
+
     NavigationBar(
         modifier = Modifier.windowInsetsPadding(
             WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
@@ -30,24 +33,21 @@ fun NavBar(
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
+            val selected = if (currentRoute == item.route) {
+                viewModel.setTopBarTitle(item.title)
+                true
+            } else false
             NavigationBarItem(
-                selected = currentRoute == item.route,
+                selected = selected,
                 onClick = {
-                    if (item == BottomItems.More
-                        || item == BottomItems.MyClass
-                    ) {
-                        onClick(item)
-                    } else {
-                        navController.navigate(item.route) {
-                            viewModel.setTopBarTitle(item.title)
-                            navController.graph.startDestinationRoute?.let { screen_route ->
-                                popUpTo(screen_route) {
-                                    saveState = true
-                                }
-                            }
-                            launchSingleTop = true
-                            restoreState = true
+                    when (item) {
+                        BottomItems.More -> onClick(item)
+                        BottomItems.MyClass -> {
+                            if (loginState.value) {
+                                navController.navigation(item)
+                            } else onClick(item)
                         }
+                        else -> navController.navigation(item)
                     }
                 },
                 icon = { Icon(imageVector = item.image, contentDescription = item.title) },
@@ -82,6 +82,18 @@ fun NavBar(
 //            )
 //        }
 //    }
+}
+
+fun NavController.navigation(item: BottomItems) {
+    navigate(item.route) {
+        graph.startDestinationRoute?.let { screen_route ->
+            popUpTo(screen_route) {
+                saveState = true
+            }
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
 }
 
 @Preview

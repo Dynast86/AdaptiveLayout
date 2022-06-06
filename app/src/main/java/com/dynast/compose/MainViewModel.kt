@@ -24,8 +24,14 @@ class MainViewModel @Inject constructor(
     private val _title = MutableLiveData("무료특강")
     val title: LiveData<String> get() = _title
 
+    private val _loginState = MutableStateFlow(false)
+    val loginState : StateFlow<Boolean> get() = _loginState
 
     fun setTopBarTitle(title: String) = viewModelScope.launch {
         _title.postValue(title)
+    }
+
+    fun setLogin() = viewModelScope.launch {
+        _loginState.emit(true)
     }
 }

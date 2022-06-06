@@ -1,4 +1,4 @@
-package com.dynast.compose.mypage
+package com.dynast.compose.ui.mypage
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
