@@ -29,7 +29,7 @@ fun NavGraph(
         }
         composable(BottomItems.Free.route) {
             val viewModel = hiltViewModel<MainViewModel>()
-            FreeScreen(modifier = modifier, uiState = viewModel.freeUiState)
+            FreeScreen(modifier = modifier, uiState = viewModel.freeUiState, paging = viewModel.temp)
         }
         composable(BottomItems.MyPage.route) {
             val parentViewModel = hiltViewModel<MainViewModel>(it)

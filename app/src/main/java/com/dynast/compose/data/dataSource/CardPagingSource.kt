@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class CardPagingSource @Inject constructor(
 //    private val api: ApiService,
-    private val index: Int,
+//    private val index: Int,
 ) : PagingSource<Int, CourseCardData>() {
     companion object {
         val TAG: String = CardPagingSource::class.java.simpleName
@@ -20,9 +20,9 @@ class CardPagingSource @Inject constructor(
 
     private fun getMockup(): List<CourseModel> {
         val items = mutableListOf<CourseModel>()
-        repeat(100) {
+        repeat(50) {
             items.add(
-                CourseModel(title = "[2020] 공인중개사 중개사법령 및 중개실무 핵심이론 단과반(장석태)", content = "장석태 | 총 ${it}강")
+                CourseModel(title = "PagingSource $it", content = "TEST | 총 ${it}강")
             )
         }
         return items.toList()
@@ -30,9 +30,9 @@ class CardPagingSource @Inject constructor(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CourseCardData> {
         return try {
-            val page = (params.key ?: (index - 1))
+            val page = params.key
 
-            LoadResult.Page(data = courseCards.toCard(), prevKey = 0, nextKey = page + 1)
+            LoadResult.Page(data = courseCards.toCard(), prevKey = page, nextKey = page?.plus(1))
         } catch (e: Exception) {
             LoadResult.Error(throwable = Throwable("Paging Error"))
         }

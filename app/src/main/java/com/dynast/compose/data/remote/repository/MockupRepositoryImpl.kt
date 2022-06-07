@@ -23,7 +23,7 @@ class MockupRepositoryImpl @Inject constructor(
             enablePlaceholders = false
         )
     ) {
-        CardPagingSource(index = 0)
+        CardPagingSource()
     }.flow
 }
 
