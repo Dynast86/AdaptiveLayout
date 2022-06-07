@@ -12,9 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.dynast.compose.data.dataSource.CardPagingSource
 import com.dynast.compose.ui.components.free.CourseCard
 import com.dynast.compose.ui.components.free.DropDownScreen
 import com.dynast.compose.ui.theme.ComposeTheme
@@ -26,11 +29,11 @@ import kotlinx.coroutines.flow.StateFlow
 fun FreeScreen(
     modifier: Modifier = Modifier,
     uiState: StateFlow<FreeUiState>,
-    paging: Flow<PagingData<CourseCardData>>? = null
+    paging: Flow<PagingData<CourseCardData>>
 ) {
     val listState = rememberLazyListState()
     val freeUiState = uiState.collectAsState()
-    val page = paging?.collectAsLazyPagingItems()
+    val page = paging.collectAsLazyPagingItems()
 
     Box(
         modifier = Modifier
@@ -45,10 +48,9 @@ fun FreeScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            if (page != null) {
-                items(items = page) { value ->
-                    CourseCard(item = value!!)
-                }
+
+            items(items = page) { value ->
+                CourseCard(item = value!!)
             }
 //            items(freeUiState.value.data) {
 //                CourseCard(item = it)
@@ -73,8 +75,17 @@ fun FreeScreenPreview() {
     val state = MutableStateFlow(
         FreeUiState(data = previewState())
     )
+    val getPagingData: Flow<PagingData<CourseCardData>> = Pager(
+        config = PagingConfig(
+            pageSize = 20,
+            enablePlaceholders = false
+        )
+    ) {
+        CardPagingSource()
+    }.flow
+
     ComposeTheme {
-        FreeScreen(uiState = state)
+        FreeScreen(uiState = state, paging = getPagingData)
     }
 }
 

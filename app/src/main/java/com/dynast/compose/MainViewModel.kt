@@ -4,9 +4,7 @@ import androidx.lifecycle.*
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.dynast.compose.data.dataSource.CardPagingSource
-import com.dynast.compose.domain.useCase.getCards.GetCardsFlowUseCase
 import com.dynast.compose.domain.useCase.getCards.GetCardsUseCase
 import com.dynast.compose.extension.Resource
 import com.dynast.compose.ui.free.CourseCardData
@@ -21,7 +19,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getCardsUseCase: GetCardsUseCase,
-    val getCardsFlowUseCase: GetCardsFlowUseCase,
     private val savedState: SavedStateHandle
 ) : ViewModel() {
     companion object {
@@ -40,7 +37,7 @@ class MainViewModel @Inject constructor(
     private var _freeUiState = MutableStateFlow(FreeUiState())
     val freeUiState get() = _freeUiState
 
-    var temp: Flow<PagingData<CourseCardData>>? = Pager(
+    val getPagingData: Flow<PagingData<CourseCardData>> = Pager(
         config = PagingConfig(
             pageSize = 20,
             enablePlaceholders = false
