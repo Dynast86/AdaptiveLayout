@@ -22,7 +22,7 @@ object NetworkModule {
     private const val WRITE_TIMEOUT = 1L
     private const val READ_TIMEOUT = 20L
 
-    private const val url = ""
+    private const val url = "https://www.google.com"
 
     @Provides
     @Singleton

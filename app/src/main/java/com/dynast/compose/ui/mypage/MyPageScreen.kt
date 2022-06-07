@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dynast.compose.MainViewModel
 import com.dynast.compose.ui.components.mypage.CourseScreen
@@ -37,6 +38,8 @@ fun MyPageScreen(
     }
 }
 
+
+
 @Preview(
     uiMode = Configuration.UI_MODE_NIGHT_NO,
     showBackground = true,
@@ -49,8 +52,8 @@ fun MyPageScreen(
 )
 @Composable
 fun MyPagePreview() {
-    val mainViewModel by lazy { MainViewModel() }
+    val viewModel : MainViewModel = hiltViewModel()
     ComposeTheme {
-        MyPageScreen(mainViewModel)
+        MyPageScreen(viewModel)
     }
 }

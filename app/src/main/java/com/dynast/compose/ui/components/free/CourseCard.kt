@@ -21,7 +21,7 @@ import com.dynast.compose.ui.free.CourseCardData
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CourseCard(
-    item: CourseCardData? = null
+    item: CourseCardData
 ) {
     var alertPopupShown by remember { mutableStateOf(false) }
     if (alertPopupShown) {
@@ -48,14 +48,14 @@ fun CourseCard(
             )
             Column(modifier = Modifier.padding(start = 16.dp)) {
                 Text(
-                    text = "[2020] 공인중개사 중개사법령 및 중개실무 핵심이론 단과반(장석태)",
+                    text = item.title,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleMedium,
                     color = Color(0xFF222222)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "장석태 | 총 5강", color = Color(0xFF888888),
+                    text = item.content, color = Color(0xFF888888),
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
@@ -75,5 +75,9 @@ fun CourseCard(
 @Preview(showBackground = true)
 @Composable
 fun CourseCardPreview() {
-    CourseCard()
+    val item = CourseCardData(
+        title = "[2020] 공인중개사 중개사법령 및 중개실무 핵심이론 단과반(장석태)",
+        content = "장석태 | 총 5강"
+    )
+    CourseCard(item = item)
 }
