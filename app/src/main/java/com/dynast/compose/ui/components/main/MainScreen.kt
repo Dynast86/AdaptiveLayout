@@ -106,7 +106,7 @@ fun MainScreen(
                     )
                 )
                 .fillMaxSize()
-        )
+        , windowSizeClass = windowSizeClass)
     }
     LoginSheet(state = loginBottomState)
     BottomSheet(state = bottomState)

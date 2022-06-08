@@ -1,5 +1,6 @@
 package com.dynast.compose.ui.components.nav
 
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,7 +17,8 @@ import com.dynast.compose.ui.mypage.MyPageScreen
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    windowSizeClass: WindowSizeClass
 ) {
     NavHost(navController = navController, startDestination = BottomItems.Free.route, modifier = modifier) {
         composable(BottomItems.MyClass.route) {
@@ -29,7 +31,7 @@ fun NavGraph(
         }
         composable(BottomItems.Free.route) {
             val viewModel = hiltViewModel<MainViewModel>()
-            FreeScreen(modifier = modifier, paging = viewModel.getPagingData)
+            FreeScreen(modifier = modifier, paging = viewModel.getPagingData, windowSizeClass = windowSizeClass)
         }
         composable(BottomItems.MyPage.route) {
             val parentViewModel = hiltViewModel<MainViewModel>(it)

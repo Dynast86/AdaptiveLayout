@@ -5,10 +5,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -22,16 +28,21 @@ import kotlinx.coroutines.flow.flowOf
 @Composable
 fun FreeScreen(
     modifier: Modifier = Modifier,
-    paging: Flow<PagingData<CourseCardData>>
+    paging: Flow<PagingData<CourseCardData>>,
+    windowSizeClass: WindowSizeClass? = null
 ) {
     val listState = rememberLazyListState()
     val page = paging.collectAsLazyPagingItems()
+    val maxDp = remember { mutableStateOf(Dp.Unspecified) }
+    windowSizeClass?.apply {
+        if (widthSizeClass != WindowWidthSizeClass.Compact) maxDp.value = 330.dp
+    }
 
     Box(
         modifier = Modifier
             .background(Color(0xFFE5E5E5))
             .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Vertical))
-            .widthIn(max = 330.dp)
+            .widthIn(max = maxDp.value)
     ) {
         Column {
 //            DropDownScreen(modifier = Modifier.fillMaxWidth())
@@ -48,6 +59,7 @@ fun FreeScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Preview(
     uiMode = Configuration.UI_MODE_NIGHT_NO,
     showBackground = true,
