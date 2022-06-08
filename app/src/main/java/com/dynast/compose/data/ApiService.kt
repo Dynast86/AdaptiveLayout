@@ -1,4 +1,3 @@
 package com.dynast.compose.data
 
-interface ApiService {
-}
+interface ApiService

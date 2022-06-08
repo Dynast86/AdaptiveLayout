@@ -1,5 +1,6 @@
 package com.dynast.compose.ui.components.nav
 
+import android.content.res.Configuration
 import androidx.compose.material.Icon
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
@@ -14,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.dynast.compose.BottomItems
 import com.dynast.compose.railItem
+import com.dynast.compose.ui.theme.ComposeTheme
 
 
 val railWidth = 80.dp
@@ -43,16 +45,27 @@ fun NavRail(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true,
+    name = "Light Mode"
+)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+    name = "Dark Mode"
+)
 @Composable
 fun NavRailPreview() {
-    NavigationRail {
-        railItem.forEach { item ->
-            NavigationRailItem(
-                selected = false,
-                onClick = {},
-                icon = { Icon(imageVector = item.image, contentDescription = item.title) },
-                label = { Text(text = item.title) })
+    ComposeTheme {
+        NavigationRail {
+            railItem.forEach { item ->
+                NavigationRailItem(
+                    selected = false,
+                    onClick = {},
+                    icon = { Icon(imageVector = item.image, contentDescription = item.title) },
+                    label = { Text(text = item.title) })
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.dynast.compose.ui.components.mypage
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.dynast.compose.ui.theme.ComposeTheme
 
 @Composable
 fun CourseScreen(
@@ -47,8 +49,19 @@ fun CourseScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true,
+    name = "Light Mode"
+)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+    name = "Dark Mode"
+)
 @Composable
 fun CourseScreenPreview() {
-    CourseScreen()
+    ComposeTheme {
+        CourseScreen()
+    }
 }

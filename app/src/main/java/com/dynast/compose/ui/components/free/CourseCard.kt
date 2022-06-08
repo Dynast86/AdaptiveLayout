@@ -1,5 +1,6 @@
 package com.dynast.compose.ui.components.free
 
+import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -22,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dynast.compose.extension.UiAlertPopup
 import com.dynast.compose.ui.free.CourseCardData
+import com.dynast.compose.ui.theme.ComposeTheme
 
 @Composable
 fun CourseCard(
@@ -83,12 +85,23 @@ fun CourseCard(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true,
+    name = "Light Mode"
+)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+    name = "Dark Mode"
+)
 @Composable
 fun CourseCardPreview() {
     val item = CourseCardData(
         title = "[2020] 공인중개사 중개사법령 및 중개실무 핵심이론 단과반(장석태)",
         content = "장석태 | 총 5강"
     )
-    CourseCard(item = item)
+    ComposeTheme {
+        CourseCard(item = item)
+    }
 }

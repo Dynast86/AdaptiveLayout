@@ -1,5 +1,6 @@
 package com.dynast.compose.ui.components.mypage
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.Image
@@ -111,10 +112,19 @@ fun ExpandableContent(
     }
 }
 
-@Preview
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true,
+    name = "Light Mode"
+)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+    name = "Dark Mode"
+)
 @Composable
 fun MyPageTabScreenPreview() {
-    ComposeTheme() {
+    ComposeTheme {
         MyPageTabScreen(visible = true)
     }
 }

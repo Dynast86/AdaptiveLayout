@@ -16,12 +16,14 @@
 
 package com.dynast.compose.extension
 
+import android.content.res.Configuration
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.dynast.compose.ui.theme.ComposeTheme
 
 @Composable
 fun FunctionalityNotAvailablePopup(onDismiss: () -> Unit) {
@@ -41,8 +43,19 @@ fun FunctionalityNotAvailablePopup(onDismiss: () -> Unit) {
     )
 }
 
-@Preview
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true,
+    name = "Light Mode"
+)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+    name = "Dark Mode"
+)
 @Composable
 fun FunctionalityNotAvailablePopupPreview() {
-    FunctionalityNotAvailablePopup { }
+    ComposeTheme {
+        FunctionalityNotAvailablePopup { }
+    }
 }

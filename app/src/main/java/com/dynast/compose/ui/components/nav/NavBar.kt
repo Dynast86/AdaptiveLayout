@@ -1,5 +1,6 @@
 package com.dynast.compose.ui.components.nav
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -15,6 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.dynast.compose.BottomItems
 import com.dynast.compose.MainViewModel
 import com.dynast.compose.items
+import com.dynast.compose.ui.theme.ComposeTheme
 
 @Composable
 fun NavBar(
@@ -76,23 +78,33 @@ fun NavBar(
 //    }
 }
 
-@Preview
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true,
+    name = "Light Mode"
+)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+    name = "Dark Mode"
+)
 @Composable
 fun NavBarPreview() {
-    NavigationBar(
-        tonalElevation = 12.dp
-    ) {
-        var selectedItem by remember { mutableStateOf(0) }
+    ComposeTheme {
+        NavigationBar(
+            tonalElevation = 12.dp
+        ) {
+            var selectedItem by remember { mutableStateOf(0) }
 
-        items.forEachIndexed { index, s ->
-            NavigationBarItem(
-                selected = selectedItem == index,
-                onClick = { selectedItem = index },
-                icon = { Icon(imageVector = s.image, contentDescription = null) },
-                label = { Text(text = s.title) }
-            )
+            items.forEachIndexed { index, s ->
+                NavigationBarItem(
+                    selected = selectedItem == index,
+                    onClick = { selectedItem = index },
+                    icon = { Icon(imageVector = s.image, contentDescription = null) },
+                    label = { Text(text = s.title) }
+                )
+            }
         }
-    }
 //    BottomNavigation {
 //        var selectedItem by remember { mutableStateOf(0) }
 //
@@ -105,4 +117,5 @@ fun NavBarPreview() {
 //            )
 //        }
 //    }
+    }
 }

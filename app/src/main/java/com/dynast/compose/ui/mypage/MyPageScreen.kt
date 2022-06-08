@@ -38,8 +38,6 @@ fun MyPageScreen(
     }
 }
 
-
-
 @Preview(
     uiMode = Configuration.UI_MODE_NIGHT_NO,
     showBackground = true,
@@ -52,7 +50,7 @@ fun MyPageScreen(
 )
 @Composable
 fun MyPagePreview() {
-    val viewModel : MainViewModel = hiltViewModel()
+    val viewModel: MainViewModel = hiltViewModel()
     ComposeTheme {
         MyPageScreen(viewModel)
     }
