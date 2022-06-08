@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.dynast.compose.ui.components.free.ChipsScreen
 import com.dynast.compose.ui.components.free.CourseCard
-import com.dynast.compose.ui.components.free.DropDownScreen
 import com.dynast.compose.ui.theme.ComposeTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -31,20 +31,19 @@ fun FreeScreen(
         modifier = Modifier
             .background(Color(0xFFE5E5E5))
             .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Vertical))
-            .padding(start = 8.dp, end = 8.dp)
-            .fillMaxSize()
+            .widthIn(max = 330.dp)
     ) {
-        LazyColumn(state = listState) {
-            item {
-                DropDownScreen(
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-
-            items(items = page) { value ->
-                CourseCard(item = value!!)
+        Column {
+//            DropDownScreen(modifier = Modifier.fillMaxWidth())
+            ChipsScreen(modifier = Modifier.fillMaxWidth())
+            LazyColumn(
+                state = listState,
+                contentPadding = PaddingValues(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
+            ) {
+                items(items = page) { value -> CourseCard(item = value!!) }
             }
         }
+
 //        TopAppBar()
     }
 }

@@ -42,7 +42,7 @@ fun CourseCard(
     }
     Card(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(top = 4.dp, bottom = 4.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
         elevation = 4.dp

@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.dynast.compose.ui.theme.ComposeTheme
 
@@ -23,7 +24,7 @@ fun DropDownScreen(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded },
         modifier = Modifier
-            .padding(top = 16.dp, bottom = 8.dp, start = 8.dp, end = 8.dp)
+            .padding(bottom = 8.dp)
             .fillMaxWidth()
     ) {
         OutlinedTextField(
@@ -34,11 +35,9 @@ fun DropDownScreen(
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
             modifier = modifier
         )
-        ExposedDropdownMenu(
+        DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = modifier
-        ) {
+            onDismissRequest = { expanded = false }) {
             options.forEach { selectionOption ->
                 DropdownMenuItem(
                     modifier = modifier,
@@ -50,6 +49,22 @@ fun DropDownScreen(
                 )
             }
         }
+//        ExposedDropdownMenu(
+//            expanded = expanded,
+//            onDismissRequest = { expanded = false },
+//            modifier = modifier
+//        ) {
+//            options.forEach { selectionOption ->
+//                DropdownMenuItem(
+//                    modifier = modifier,
+//                    onClick = {
+//                        selectedOptionText = selectionOption
+//                        expanded = false
+//                    },
+//                    content = { Text(selectionOption) }
+//                )
+//            }
+//        }
     }
 }
 
