@@ -1,6 +1,5 @@
 package com.dynast.compose.extension.di
 
-import com.dynast.compose.data.dataSource.CardPagingSource
 import com.dynast.compose.data.dataSource.MockupDataSource
 import com.dynast.compose.data.remote.repository.MockupRepository
 import com.dynast.compose.data.remote.repository.MockupRepositoryImpl

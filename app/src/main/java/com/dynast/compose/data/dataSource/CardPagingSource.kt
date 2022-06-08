@@ -2,16 +2,11 @@ package com.dynast.compose.data.dataSource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.dynast.compose.data.ApiService
 import com.dynast.compose.data.remote.dto.CourseModel
 import com.dynast.compose.data.remote.repository.toCard
 import com.dynast.compose.ui.free.CourseCardData
-import javax.inject.Inject
 
-class CardPagingSource @Inject constructor(
-//    private val api: ApiService,
-//    private val index: Int,
-) : PagingSource<Int, CourseCardData>() {
+class CardPagingSource : PagingSource<Int, CourseCardData>() {
     companion object {
         val TAG: String = CardPagingSource::class.java.simpleName
     }

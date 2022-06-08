@@ -2,14 +2,14 @@ package com.dynast.compose.ui.components.free
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dynast.compose.ui.theme.ComposeTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DropDownScreen(
     modifier: Modifier = Modifier
@@ -41,11 +41,11 @@ fun DropDownScreen(
             options.forEach { selectionOption ->
                 DropdownMenuItem(
                     modifier = modifier,
-                    text = { Text(selectionOption) },
                     onClick = {
                         selectedOptionText = selectionOption
                         expanded = false
-                    }
+                    },
+                    content = { Text(selectionOption) }
                 )
             }
         }

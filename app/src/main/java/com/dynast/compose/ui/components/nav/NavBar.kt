@@ -2,9 +2,9 @@ package com.dynast.compose.ui.components.nav
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,8 +23,6 @@ fun NavBar(
     onClick: (BottomItems) -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ) {
-    val loginState = viewModel.loginState.collectAsState()
-
     NavigationBar(
         modifier = Modifier.windowInsetsPadding(
             WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
@@ -39,22 +37,13 @@ fun NavBar(
             } else false
             NavigationBarItem(
                 selected = selected,
-                onClick = {
-                    when (item) {
-                        BottomItems.More -> onClick(item)
-                        BottomItems.MyClass -> {
-                            if (loginState.value) {
-                                navController.navigation(item)
-                            } else onClick(item)
-                        }
-                        else -> navController.navigation(item)
-                    }
-                },
+                onClick = { onClick(item) },
                 icon = { Icon(imageVector = item.image, contentDescription = item.title) },
                 label = { Text(text = item.title) }
             )
         }
     }
+
 //    BottomNavigation(
 //        modifier = Modifier.windowInsetsPadding(
 //            WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
@@ -63,18 +52,21 @@ fun NavBar(
 //        val navBackStackEntry by navController.currentBackStackEntryAsState()
 //        val currentRoute = navBackStackEntry?.destination?.route
 //        items.forEach { item ->
+//            val selected = if (currentRoute == item.route) {
+//                viewModel.setTopBarTitle(item.title)
+//                true
+//            } else false
 //            BottomNavigationItem(
-//                selected = currentRoute == item.route,
+//                selected = selected,
 //                onClick = {
-//                    navController.navigate(item.route) {
-//
-//                        navController.graph.startDestinationRoute?.let { screen_route ->
-//                            popUpTo(screen_route) {
-//                                saveState = true
-//                            }
+//                    when (item) {
+//                        BottomItems.More -> onClick(item)
+//                        BottomItems.MyClass -> {
+//                            if (loginState.value) {
+//                                navController.navigation(item)
+//                            } else onClick(item)
 //                        }
-//                        launchSingleTop = true
-//                        restoreState = true
+//                        else -> navController.navigation(item)
 //                    }
 //                },
 //                icon = { Icon(imageVector = item.image, contentDescription = item.title) },
@@ -82,18 +74,6 @@ fun NavBar(
 //            )
 //        }
 //    }
-}
-
-fun NavController.navigation(item: BottomItems) {
-    navigate(item.route) {
-        graph.startDestinationRoute?.let { screen_route ->
-            popUpTo(screen_route) {
-                saveState = true
-            }
-        }
-        launchSingleTop = true
-        restoreState = true
-    }
 }
 
 @Preview
@@ -113,4 +93,16 @@ fun NavBarPreview() {
             )
         }
     }
+//    BottomNavigation {
+//        var selectedItem by remember { mutableStateOf(0) }
+//
+//        items.forEachIndexed { index, s ->
+//            BottomNavigationItem(
+//                selected = selectedItem == index,
+//                onClick = { selectedItem = index },
+//                icon = { Icon(imageVector = s.image, contentDescription = null) },
+//                label = { Text(text = s.title) }
+//            )
+//        }
+//    }
 }

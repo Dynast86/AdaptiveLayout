@@ -31,7 +31,7 @@ fun TopList(
         Row(modifier = Modifier.fillMaxWidth()) {
             var notifyCnt by remember { mutableStateOf(1) }
             var notifyCnt2 by remember { mutableStateOf(10) }
-            var notifyCnt3 by remember { mutableStateOf(100) }
+            val notifyCnt3 by remember { mutableStateOf(100) }
             val modifier = Modifier
                 .weight(1F)
                 .padding()

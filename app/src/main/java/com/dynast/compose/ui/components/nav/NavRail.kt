@@ -23,6 +23,7 @@ fun NavRail(
     navController: NavController,
     modifier: Modifier = Modifier,
     items: List<BottomItems>,
+    onClick: (BottomItems) -> Unit,
     content: @Composable (Dp) -> Unit
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -32,18 +33,7 @@ fun NavRail(
         items.forEach { item ->
             NavigationRailItem(
                 selected = currentRoute == item.route,
-                onClick = {
-                    navController.navigate(item.route) {
-
-                        navController.graph.startDestinationRoute?.let { screen_route ->
-                            popUpTo(screen_route) {
-                                saveState = true
-                            }
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
+                onClick = { onClick(item) },
                 icon = { Icon(imageVector = item.image, contentDescription = item.title) },
                 label = { Text(text = item.title) }
             )

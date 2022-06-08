@@ -4,35 +4,27 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.dynast.compose.data.dataSource.CardPagingSource
 import com.dynast.compose.ui.components.free.CourseCard
 import com.dynast.compose.ui.components.free.DropDownScreen
 import com.dynast.compose.ui.theme.ComposeTheme
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun FreeScreen(
     modifier: Modifier = Modifier,
-    uiState: StateFlow<FreeUiState>,
     paging: Flow<PagingData<CourseCardData>>
 ) {
     val listState = rememberLazyListState()
-    val freeUiState = uiState.collectAsState()
     val page = paging.collectAsLazyPagingItems()
 
     Box(
@@ -52,9 +44,6 @@ fun FreeScreen(
             items(items = page) { value ->
                 CourseCard(item = value!!)
             }
-//            items(freeUiState.value.data) {
-//                CourseCard(item = it)
-//            }
         }
 //        TopAppBar()
     }
@@ -72,20 +61,8 @@ fun FreeScreen(
 )
 @Composable
 fun FreeScreenPreview() {
-    val state = MutableStateFlow(
-        FreeUiState(data = previewState())
-    )
-    val getPagingData: Flow<PagingData<CourseCardData>> = Pager(
-        config = PagingConfig(
-            pageSize = 20,
-            enablePlaceholders = false
-        )
-    ) {
-        CardPagingSource()
-    }.flow
-
     ComposeTheme {
-        FreeScreen(uiState = state, paging = getPagingData)
+        FreeScreen(paging = flowOf(PagingData.from(previewState())))
     }
 }
 

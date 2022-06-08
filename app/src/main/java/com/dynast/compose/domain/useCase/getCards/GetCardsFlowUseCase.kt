@@ -6,8 +6,8 @@ import com.dynast.compose.extension.di.IoDispatcher
 import com.dynast.compose.ui.free.CourseCardData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 class GetCardsFlowUseCase @Inject constructor(
@@ -19,8 +19,10 @@ class GetCardsFlowUseCase @Inject constructor(
     }
 
     suspend operator fun invoke(): Flow<PagingData<CourseCardData>> {
-        return flow {
-            emitAll(repository.getCards(20))
+        return callbackFlow {
+            repository.getCards(20).collectLatest {
+                trySend(it)
+            }
         }
     }
 }
