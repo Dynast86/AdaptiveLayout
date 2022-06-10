@@ -1,3 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Compose</string>
+    <string name="dummy" tools:ignore="ExtraTranslation">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
 </resources>

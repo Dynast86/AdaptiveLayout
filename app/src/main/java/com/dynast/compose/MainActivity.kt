@@ -1,96 +1,144 @@
 package com.dynast.compose
 
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Place
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.window.layout.FoldingFeature
+import androidx.window.layout.WindowInfoTracker
+import com.dynast.compose.extension.DevicePosture
+import com.dynast.compose.extension.isBookPosture
+import com.dynast.compose.extension.isSeparating
 import com.dynast.compose.ui.components.main.MainScreen
 import com.dynast.compose.ui.theme.ComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
-
-sealed class BottomItems(val image: ImageVector, val title: String, val route: String) {
-    object MyClass : BottomItems(Icons.Filled.Favorite, "나의강의실", "MyClass")
-    object Solve : BottomItems(Icons.Filled.Email, "딱풀", "Solve")
-    object Free : BottomItems(Icons.Filled.Place, "무료특강", "Free")
-    object MyPage : BottomItems(Icons.Filled.Notifications, "마이페이지", "MyPage")
-    object More : BottomItems(Icons.Filled.Favorite, "더보기", "More")
-}
-
-val items = listOf(
-    BottomItems.MyClass,
-    BottomItems.Solve,
-    BottomItems.Free,
-    BottomItems.MyPage,
-    BottomItems.More,
-)
-
-val railItem = listOf(
-    BottomItems.MyClass,
-    BottomItems.Solve,
-    BottomItems.Free,
-    BottomItems.MyPage,
-)
-
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel : MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val devicePostureFlow = WindowInfoTracker.getOrCreate(this).windowLayoutInfo(this)
+            .flowWithLifecycle(this.lifecycle)
+            .map { layoutInfo ->
+                val foldingFeature =
+                    layoutInfo.displayFeatures
+                        .filterIsInstance<FoldingFeature>()
+                        .firstOrNull()
+                when {
+                    isBookPosture(foldingFeature) ->
+                        DevicePosture.BookPosture(foldingFeature.bounds)
+
+                    isSeparating(foldingFeature) ->
+                        DevicePosture.Separating(foldingFeature.bounds, foldingFeature.orientation)
+
+                    else -> DevicePosture.NormalPosture
+                }
+            }
+            .stateIn(
+                scope = lifecycleScope,
+                started = SharingStarted.Eagerly,
+                initialValue = DevicePosture.NormalPosture
+            )
+
         setContent {
             ComposeTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    MainScreen(viewModel = viewModel, windowSizeClass = calculateWindowSizeClass(activity = this))
+                    val devicePosture = devicePostureFlow.collectAsState().value
+                    val uiState = viewModel.uiState.collectAsState().value
+
+                    MainScreen(
+                        uiState = uiState,
+                        windowSizeClass = calculateWindowSizeClass(activity = this).widthSizeClass,
+                        devicePosture = devicePosture,
+                        viewModel = viewModel,
+                    )
                 }
             }
         }
     }
 }
 
-@Preview(
-    uiMode = UI_MODE_NIGHT_NO,
-    showBackground = true,
-    name = "Light Mode"
-)
-@Preview(
-    uiMode = UI_MODE_NIGHT_YES,
-    showBackground = true,
-    name = "Dark Mode"
-)
+@Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun AppPreview() {
     ComposeTheme {
-        NavigationBar {
-            var selectedItem by remember { mutableStateOf(0) }
-
-            items.forEachIndexed { index, s ->
-                NavigationBarItem(
-                    selected = selectedItem == index,
-                    onClick = { selectedItem = index },
-                    icon = { Icon(imageVector = s.image, contentDescription = null) },
-                    label = { Text(text = s.title) }
-                )
-            }
-        }
+        MainScreen(
+            uiState = HomeUIState(courseCard = emptyList()),
+            windowSizeClass = WindowWidthSizeClass.Compact,
+            devicePosture = DevicePosture.NormalPosture,
+        )
     }
 }
+
+@Preview(showBackground = true, widthDp = 700)
+@Composable
+fun AppPreviewTablet() {
+    ComposeTheme {
+        MainScreen(
+            uiState = HomeUIState(courseCard = emptyList()),
+            windowSizeClass = WindowWidthSizeClass.Medium,
+            devicePosture = DevicePosture.NormalPosture,
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = 1024)
+@Composable
+fun AppPreviewDesktop() {
+    ComposeTheme {
+        MainScreen(
+            uiState = HomeUIState(courseCard = emptyList()),
+            windowSizeClass = WindowWidthSizeClass.Expanded,
+            devicePosture = DevicePosture.NormalPosture,
+        )
+    }
+}
+
+//@Preview(
+//    uiMode = UI_MODE_NIGHT_NO,
+//    showBackground = true,
+//    name = "Light Mode"
+//)
+//@Preview(
+//    uiMode = UI_MODE_NIGHT_YES,
+//    showBackground = true,
+//    name = "Dark Mode"
+//)
+//@Composable
+//fun DefaultPreview() {
+//    ComposeTheme {
+//        NavigationBar {
+//            var selectedItem by remember { mutableStateOf(0) }
+//
+//            items.forEachIndexed { index, s ->
+//                NavigationBarItem(
+//                    selected = selectedItem == index,
+//                    onClick = { selectedItem = index },
+//                    icon = { Icon(imageVector = s.image, contentDescription = null) },
+//                    label = { Text(text = s.title) }
+//                )
+//            }
+//        }
+//    }
+//}

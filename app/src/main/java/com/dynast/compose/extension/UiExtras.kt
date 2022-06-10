@@ -17,16 +17,81 @@
 package com.dynast.compose.extension
 
 import android.content.res.Configuration
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import com.dynast.compose.R
 import com.dynast.compose.ui.theme.ComposeTheme
 
 @Composable
-fun FunctionalityNotAvailablePopup(onDismiss: () -> Unit) {
+fun FunctionalityNotAvailablePopup(
+    windowSizeClass: WindowSizeClass? = null,
+    title: String? = null,
+    onDismiss: () -> Unit
+) {
+    Dialog(
+        onDismissRequest = onDismiss,
+    ) {
+        Surface(
+            modifier = Modifier
+                .sizeIn(minWidth = 280.dp, maxWidth = 560.dp)
+                .wrapContentHeight(),
+            shape = RoundedCornerShape(28.dp),
+            color = MaterialTheme.colorScheme.surface,
+        ) {
+            Column(modifier = Modifier.padding(24.dp)) {
+                title?.apply {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "Basic Dialog Title",
+                        style = MaterialTheme.typography.headlineSmall,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+                Text(
+                    text = stringResource(id = R.string.dummy),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    TextButton(onClick = onDismiss) {
+                        Text(
+                            text = "Negative",
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    }
+                    TextButton(onClick = onDismiss) {
+                        Text(
+                            text = "Positive",
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AlertDialogCompose(
+    windowSizeClass: WindowSizeClass? = null,
+    onDismiss: () -> Unit
+) {
     AlertDialog(
         onDismissRequest = onDismiss,
         text = {
@@ -45,17 +110,28 @@ fun FunctionalityNotAvailablePopup(onDismiss: () -> Unit) {
 
 @Preview(
     uiMode = Configuration.UI_MODE_NIGHT_NO,
-    showBackground = true,
+    showSystemUi = true,
+    device = Devices.AUTOMOTIVE_1024p,
     name = "Light Mode"
-)
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true,
-    name = "Dark Mode"
 )
 @Composable
 fun FunctionalityNotAvailablePopupPreview() {
     ComposeTheme {
         FunctionalityNotAvailablePopup { }
+    }
+}
+
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    name = "Light Mode"
+)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    name = "Dark Mode"
+)
+@Composable
+fun AlertDialogComposePreview() {
+    ComposeTheme {
+        AlertDialogCompose {}
     }
 }

@@ -9,13 +9,12 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.dynast.compose.BottomItems
 import com.dynast.compose.MainViewModel
-import com.dynast.compose.items
+import com.dynast.compose.ui.components.main.BottomItems
+import com.dynast.compose.ui.components.main.items
 import com.dynast.compose.ui.theme.ComposeTheme
 
 @Composable
@@ -91,9 +90,7 @@ fun NavBar(
 @Composable
 fun NavBarPreview() {
     ComposeTheme {
-        NavigationBar(
-            tonalElevation = 12.dp
-        ) {
+        NavigationBar(modifier = Modifier.fillMaxWidth()) {
             var selectedItem by remember { mutableStateOf(0) }
 
             items.forEachIndexed { index, s ->

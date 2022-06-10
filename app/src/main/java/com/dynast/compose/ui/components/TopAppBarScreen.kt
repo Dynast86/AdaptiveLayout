@@ -6,11 +6,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.*
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -24,11 +24,12 @@ import com.dynast.compose.ui.theme.ComposeTheme
 
 @Composable
 fun TopAppBarScreen(
+    windowSizeClass: WindowWidthSizeClass? = null,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     var functionalityNotAvailablePopupShown by remember { mutableStateOf(false) }
     if (functionalityNotAvailablePopupShown) {
-        FunctionalityNotAvailablePopup { functionalityNotAvailablePopupShown = false }
+        FunctionalityNotAvailablePopup(title = "Basic Dialog Title") { functionalityNotAvailablePopupShown = false }
     }
 
     val title = viewModel.title.observeAsState()
@@ -36,10 +37,14 @@ fun TopAppBarScreen(
     SmallTopAppBar(
         title = { title.value?.let { Text(text = it) } },
         navigationIcon = {
-            IconButton(
-                onClick = { /* "Open nav drawer" */ }
-            ) {
-                Icon(Icons.Filled.Menu, contentDescription = "Localized description")
+            windowSizeClass?.apply {
+                if (this == WindowWidthSizeClass.Compact) {
+                    IconButton(
+                        onClick = { /* "Open nav drawer" */ }
+                    ) {
+                        Icon(Icons.Filled.Menu, contentDescription = "Localized description")
+                    }
+                }
             }
         },
         actions = {

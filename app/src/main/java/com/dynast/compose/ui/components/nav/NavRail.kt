@@ -1,7 +1,15 @@
 package com.dynast.compose.ui.components.nav
 
 import android.content.res.Configuration
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
@@ -9,28 +17,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.dynast.compose.BottomItems
-import com.dynast.compose.railItem
+import com.dynast.compose.ui.components.main.BottomItems
+import com.dynast.compose.ui.components.main.railItem
 import com.dynast.compose.ui.theme.ComposeTheme
-
-
-val railWidth = 80.dp
 
 @Composable
 fun NavRail(
     navController: NavController,
-    modifier: Modifier = Modifier,
     items: List<BottomItems>,
     onClick: (BottomItems) -> Unit,
-    content: @Composable (Dp) -> Unit
+    headerClick: () -> Unit,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-    NavigationRail(modifier = modifier) {
+    NavigationRail(
+        header = {
+            Spacer(modifier = Modifier.height(56.dp))
+            IconButton(
+                onClick = headerClick
+            ) {
+                Icon(Icons.Filled.Menu, contentDescription = "Localized description")
+            }
+            Spacer(modifier = Modifier.height(40.dp))
+        }
+    )
+    {
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
             NavigationRailItem(
@@ -41,7 +55,6 @@ fun NavRail(
             )
 
         }
-        content(railWidth)
     }
 }
 
@@ -56,13 +69,23 @@ fun NavRail(
     name = "Dark Mode"
 )
 @Composable
-fun NavRailPreview() {
+fun NavRailPreview(onDrawerClicked: () -> Unit = {}) {
     ComposeTheme {
-        NavigationRail {
+        NavigationRail(
+            header = {
+                Spacer(modifier = Modifier.height(56.dp))
+                Image(
+                    modifier = Modifier.clickable { },
+                    imageVector = Icons.Filled.Menu, contentDescription = null
+                )
+                Spacer(modifier = Modifier.height(40.dp))
+            },
+            modifier = Modifier.fillMaxHeight()
+        ) {
             railItem.forEach { item ->
                 NavigationRailItem(
                     selected = false,
-                    onClick = {},
+                    onClick = onDrawerClicked,
                     icon = { Icon(imageVector = item.image, contentDescription = item.title) },
                     label = { Text(text = item.title) })
             }

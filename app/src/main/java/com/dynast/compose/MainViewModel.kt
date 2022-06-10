@@ -12,6 +12,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+data class HomeUIState(
+    val courseCard : List<CourseCardData> = emptyList(),
+    val loading: Boolean = false,
+    val error: String? = null
+)
+
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getCardsUseCase: GetCardsUseCase,
@@ -30,6 +36,9 @@ class MainViewModel @Inject constructor(
 
     private val _loginState = MutableStateFlow(false)
     val loginState: StateFlow<Boolean> get() = _loginState
+
+    private val _uiState = MutableStateFlow(HomeUIState(loading = true))
+    val uiState: StateFlow<HomeUIState> = _uiState
 
     //    val getPagingData: Flow<PagingData<CourseCardData>> = Pager(
 //        config = PagingConfig(

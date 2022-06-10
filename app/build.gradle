@@ -101,4 +101,7 @@ dependencies {
     // Paging
     implementation "androidx.paging:paging-compose:1.0.0-alpha15"
 
+    // Window
+    implementation "androidx.window:window:1.0.0"
+
 }
