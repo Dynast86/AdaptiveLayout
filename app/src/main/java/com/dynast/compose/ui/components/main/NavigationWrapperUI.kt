@@ -2,14 +2,15 @@ package com.dynast.compose.ui.components.main
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -25,6 +26,7 @@ fun NavigationWrapperUI(
     navigationType: NavigationType,
     contentType: ContentType,
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -33,6 +35,13 @@ fun NavigationWrapperUI(
             navController = navHostController,
             navigationType = navigationType,
             contentType = contentType,
+            onBottomItemClick = { item ->
+                when (item) {
+                    BottomItems.MyClass -> scope.launch { snackBarHostState.showSnackbar(message = "LOGIN") }
+                    BottomItems.More -> scope.launch { snackBarHostState.showSnackbar(message = item.title) }
+                    else -> navHostController.navigation(item)
+                }
+            }
         )
     } else {
         val navBackStackEntry by navHostController.currentBackStackEntryAsState()
@@ -46,7 +55,13 @@ fun NavigationWrapperUI(
                 ) { item ->
                     scope.launch {
                         drawerState.close()
-                        item?.apply { navHostController.navigation(item) }
+                        item?.let { item ->
+                            when (item) {
+                                BottomItems.MyClass -> scope.launch { snackBarHostState.showSnackbar(message = "LOGIN") }
+                                BottomItems.More -> scope.launch { snackBarHostState.showSnackbar(message = item.title) }
+                                else -> navHostController.navigation(item)
+                            }
+                        }
                     }
                 }
             },
@@ -57,12 +72,24 @@ fun NavigationWrapperUI(
                 navigationType = navigationType,
                 contentType = contentType,
                 onDrawerClicked = { scope.launch { drawerState.open() } },
-                onBottomItemClick = { item -> navHostController.navigation(item) }
+                onBottomItemClick = { item ->
+                    when (item) {
+                        BottomItems.MyClass -> scope.launch { snackBarHostState.showSnackbar(message = "LOGIN") }
+                        BottomItems.More -> scope.launch { snackBarHostState.showSnackbar(message = item.title) }
+                        else -> navHostController.navigation(item)
+                    }
+                }
             )
         }
     }
+    SnackbarHost(
+        snackBarHostState,
+        modifier = Modifier
+            .wrapContentWidth()
+            .wrapContentHeight(align = Alignment.Bottom)
+            .padding(bottom = if (navigationType == NavigationType.BOTTOM_NAVIGATION) 80.dp else 0.dp)
+    )
 }
-
 
 @Composable
 fun AppContent(
@@ -70,7 +97,7 @@ fun AppContent(
     navigationType: NavigationType,
     contentType: ContentType,
     onDrawerClicked: () -> Unit = {},
-    onBottomItemClick: (BottomItems) -> Unit
+    onBottomItemClick: (BottomItems) -> Unit = {}
 ) {
     Row(modifier = Modifier.fillMaxSize()) {
         AnimatedVisibility(visible = navigationType == NavigationType.NAVIGATION_RAIL) {
@@ -103,9 +130,7 @@ fun AppContent(
 fun NavController.navigation(item: BottomItems) {
     navigate(item.route) {
         graph.startDestinationRoute?.let { screen_route ->
-            popUpTo(screen_route) {
-                saveState = true
-            }
+            popUpTo(screen_route) { saveState = true }
         }
         launchSingleTop = true
         restoreState = true

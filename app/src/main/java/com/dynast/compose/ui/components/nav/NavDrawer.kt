@@ -20,7 +20,6 @@ import com.dynast.compose.extension.ContentType
 import com.dynast.compose.extension.NavigationType
 import com.dynast.compose.ui.components.main.AppContent
 import com.dynast.compose.ui.components.main.BottomItems
-import com.dynast.compose.ui.components.main.navigation
 import com.dynast.compose.ui.components.main.railItem
 import com.dynast.compose.ui.theme.ComposeTheme
 
@@ -29,7 +28,8 @@ import com.dynast.compose.ui.theme.ComposeTheme
 fun NavDrawer(
     navController: NavHostController,
     navigationType: NavigationType,
-    contentType: ContentType
+    contentType: ContentType,
+    onBottomItemClick: (BottomItems) -> Unit
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -40,7 +40,7 @@ fun NavDrawer(
             navigationType = navigationType,
         ) { item ->
             item?.apply {
-                navController.navigation(item)
+                onBottomItemClick(item)
             }
         }
     }) {
@@ -48,8 +48,7 @@ fun NavDrawer(
             navHostController = navController,
             navigationType = navigationType,
             contentType = contentType,
-            onDrawerClicked = {},
-            onBottomItemClick = {})
+            onDrawerClicked = {})
     }
 }
 
