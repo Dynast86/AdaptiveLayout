@@ -14,7 +14,10 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Place
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -97,11 +100,7 @@ fun MainScreen(
         navHostController = navController,
         navigationType = navigationType,
         contentType = contentType,
-        homeUIState = uiState
     )
-
-
-//    val snackBarHostState = remember { SnackbarHostState() }
 //    val scope = rememberCoroutineScope()
 //    val bottomState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 //    val loginBottomState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)

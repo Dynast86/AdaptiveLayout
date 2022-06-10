@@ -5,14 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -30,22 +26,16 @@ fun FreeScreen(
 ) {
     val listState = rememberLazyListState()
     val page = paging.collectAsLazyPagingItems()
-//    val maxDp = remember { mutableStateOf(if (windowSizeClass != WindowWidthSizeClass.Compact) 330.dp else Dp.Unspecified) }
-    val maxDp = remember {
-        Dp.Unspecified
-    }
 
     Box(
-        modifier = Modifier
-            .background(Color(0xFFE5E5E5))
-            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Vertical))
-    ) {
-        Column(modifier = Modifier.widthIn(max = maxDp)) {
+        modifier = modifier) {
+        Column(modifier = modifier) {
 //            DropDownScreen(modifier = Modifier.fillMaxWidth())
             ChipsScreen(modifier = Modifier.fillMaxWidth())
             LazyColumn(
                 state = listState,
-                contentPadding = PaddingValues(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
+                contentPadding = PaddingValues(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+                modifier = modifier.weight(1f)
             ) {
                 items(items = page) { value -> CourseCard(item = value!!) }
             }
@@ -68,9 +58,7 @@ fun FreeScreen(
 @Composable
 fun FreeScreenPreview() {
     ComposeTheme {
-        FreeScreen(paging = flowOf(PagingData.from(previewState())),
-//            windowSizeClass = WindowWidthSizeClass.Compact
-        )
+        FreeScreen(paging = flowOf(PagingData.from(previewState())))
     }
 }
 

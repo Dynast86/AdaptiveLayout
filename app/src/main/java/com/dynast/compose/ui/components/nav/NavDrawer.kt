@@ -15,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.dynast.compose.HomeUIState
 import com.dynast.compose.R
 import com.dynast.compose.extension.ContentType
 import com.dynast.compose.extension.NavigationType
@@ -30,8 +29,7 @@ import com.dynast.compose.ui.theme.ComposeTheme
 fun NavDrawer(
     navController: NavHostController,
     navigationType: NavigationType,
-    contentType: ContentType,
-    homeUIState: HomeUIState
+    contentType: ContentType
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -50,8 +48,8 @@ fun NavDrawer(
             navHostController = navController,
             navigationType = navigationType,
             contentType = contentType,
-            homeUIState = homeUIState,
-            onDrawerClicked = {})
+            onDrawerClicked = {},
+            onBottomItemClick = {})
     }
 }
 
@@ -94,9 +92,7 @@ fun Drawer(
 
         railItem.forEach { item ->
             NavigationDrawerItem(
-                label = {
-                    Text(text = item.title, modifier = Modifier.padding(horizontal = 16.dp))
-                },
+                label = { Text(text = item.title, modifier = Modifier.padding(horizontal = 16.dp)) },
                 selected = selectedDestination == item.route,
                 onClick = { onDrawerClicked(item) },
                 colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)

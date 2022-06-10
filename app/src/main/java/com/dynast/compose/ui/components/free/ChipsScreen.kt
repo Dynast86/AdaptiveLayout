@@ -29,7 +29,7 @@ fun ChipsScreen(
     var selectedItem by remember { mutableStateOf(0) }
 
     Column(
-        modifier = modifier.background(Color.White),
+        modifier = modifier,
     ) {
         Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
             repeat(5) { index ->

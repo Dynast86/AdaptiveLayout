@@ -44,37 +44,6 @@ fun NavBar(
             )
         }
     }
-
-//    BottomNavigation(
-//        modifier = Modifier.windowInsetsPadding(
-//            WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
-//        )
-//    ) {
-//        val navBackStackEntry by navController.currentBackStackEntryAsState()
-//        val currentRoute = navBackStackEntry?.destination?.route
-//        items.forEach { item ->
-//            val selected = if (currentRoute == item.route) {
-//                viewModel.setTopBarTitle(item.title)
-//                true
-//            } else false
-//            BottomNavigationItem(
-//                selected = selected,
-//                onClick = {
-//                    when (item) {
-//                        BottomItems.More -> onClick(item)
-//                        BottomItems.MyClass -> {
-//                            if (loginState.value) {
-//                                navController.navigation(item)
-//                            } else onClick(item)
-//                        }
-//                        else -> navController.navigation(item)
-//                    }
-//                },
-//                icon = { Icon(imageVector = item.image, contentDescription = item.title) },
-//                label = { Text(text = item.title) }
-//            )
-//        }
-//    }
 }
 
 @Preview(
@@ -102,17 +71,5 @@ fun NavBarPreview() {
                 )
             }
         }
-//    BottomNavigation {
-//        var selectedItem by remember { mutableStateOf(0) }
-//
-//        items.forEachIndexed { index, s ->
-//            BottomNavigationItem(
-//                selected = selectedItem == index,
-//                onClick = { selectedItem = index },
-//                icon = { Icon(imageVector = s.image, contentDescription = null) },
-//                label = { Text(text = s.title) }
-//            )
-//        }
-//    }
     }
 }

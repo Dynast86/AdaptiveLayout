@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.dynast.compose.HomeUIState
 import com.dynast.compose.extension.ContentType
 import com.dynast.compose.extension.NavigationType
 import com.dynast.compose.ui.components.nav.*
@@ -25,7 +24,6 @@ fun NavigationWrapperUI(
     navHostController: NavHostController,
     navigationType: NavigationType,
     contentType: ContentType,
-    homeUIState: HomeUIState
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -35,7 +33,6 @@ fun NavigationWrapperUI(
             navController = navHostController,
             navigationType = navigationType,
             contentType = contentType,
-            homeUIState = homeUIState
         )
     } else {
         val navBackStackEntry by navHostController.currentBackStackEntryAsState()
@@ -49,9 +46,7 @@ fun NavigationWrapperUI(
                 ) { item ->
                     scope.launch {
                         drawerState.close()
-                        item?.apply {
-                            navHostController.navigation(item)
-                        }
+                        item?.apply { navHostController.navigation(item) }
                     }
                 }
             },
@@ -61,10 +56,8 @@ fun NavigationWrapperUI(
                 navHostController = navHostController,
                 navigationType = navigationType,
                 contentType = contentType,
-                homeUIState = homeUIState,
-                onDrawerClicked = {
-                    scope.launch { drawerState.open() }
-                }
+                onDrawerClicked = { scope.launch { drawerState.open() } },
+                onBottomItemClick = { item -> navHostController.navigation(item) }
             )
         }
     }
@@ -76,30 +69,23 @@ fun AppContent(
     navHostController: NavHostController,
     navigationType: NavigationType,
     contentType: ContentType,
-    homeUIState: HomeUIState,
-    onDrawerClicked: () -> Unit = {}
+    onDrawerClicked: () -> Unit = {},
+    onBottomItemClick: (BottomItems) -> Unit
 ) {
-
     Row(modifier = Modifier.fillMaxSize()) {
         AnimatedVisibility(visible = navigationType == NavigationType.NAVIGATION_RAIL) {
-            NavRail(navController = navHostController, items = railItem, onClick = { item ->
-                navHostController.navigation(item)
-            }, headerClick = onDrawerClicked)
+            NavRail(
+                navController = navHostController,
+                items = railItem,
+                onClick = { item -> onBottomItemClick(item) },
+                headerClick = onDrawerClicked
+            )
         }
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.inverseOnSurface)
         ) {
-//            if (contentType == ContentType.LIST_AND_DETAIL) {
-//                ListAndDetailContent(
-//                    replyHomeUIState = homeUIState,
-//                    modifier = Modifier.weight(1f),
-//                )
-//            } else {
-//                ListOnlyContent(replyHomeUIState = homeUIState, modifier = Modifier.weight(1f))
-//            }
-//
             NavGraph(
                 navController = navHostController,
                 modifier = Modifier.weight(1f),
@@ -107,9 +93,8 @@ fun AppContent(
                 startDestination = BottomItems.Free.route
             )
             AnimatedVisibility(visible = navigationType == NavigationType.BOTTOM_NAVIGATION) {
-                NavBar(navController = navHostController, items = items, onClick = { item ->
-                    navHostController.navigation(item)
-                })
+                NavBar(navController = navHostController, items = items,
+                    onClick = { item -> onBottomItemClick(item) })
             }
         }
     }
