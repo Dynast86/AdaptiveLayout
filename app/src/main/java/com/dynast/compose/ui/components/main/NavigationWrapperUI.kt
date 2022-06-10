@@ -48,6 +48,7 @@ fun NavigationWrapperUI(
         val currentRoute = navBackStackEntry?.destination?.route
 
         ModalNavigationDrawer(
+            gesturesEnabled = navigationType == NavigationType.NAVIGATION_RAIL,
             drawerContent = {
                 Drawer(
                     selectedDestination = currentRoute,

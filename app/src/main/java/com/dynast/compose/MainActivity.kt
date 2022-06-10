@@ -66,10 +66,11 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     val devicePosture = devicePostureFlow.collectAsState().value
                     val uiState = viewModel.uiState.collectAsState().value
+                    val windowSizeClass = calculateWindowSizeClass(activity = this)
 
                     MainScreen(
                         uiState = uiState,
-                        windowSizeClass = calculateWindowSizeClass(activity = this).widthSizeClass,
+                        windowSizeClass = windowSizeClass.widthSizeClass,
                         devicePosture = devicePosture,
                         viewModel = viewModel,
                     )
