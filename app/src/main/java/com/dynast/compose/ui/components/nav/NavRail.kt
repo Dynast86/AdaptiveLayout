@@ -41,10 +41,9 @@ fun NavRail(
             ) {
                 Icon(Icons.Filled.Menu, contentDescription = "Localized description")
             }
-            Spacer(modifier = Modifier.height(40.dp))
+//            Spacer(modifier = Modifier.height(40.dp))
         }
-    )
-    {
+    ) {
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
             NavigationRailItem(

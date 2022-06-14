@@ -70,10 +70,10 @@ fun TopListItem(
                     notify?.apply {
                         when {
                             notify > 99 -> {
-                                Badge(content = { Text(text = "99+") })
+                                Badge { Text(text = "99+") }
                             }
                             notify in 1..99 -> {
-                                Badge(content = { Text(text = notify.toString()) })
+                                Badge { Text(text = notify.toString()) }
                             }
                             else -> {
                                 Badge()
@@ -81,10 +81,9 @@ fun TopListItem(
                         }
                     }
                 },
-                content = {
-                    Image(painter = rememberVectorPainter(image = image), contentDescription = title)
-                }
-            )
+            ) {
+                Image(painter = rememberVectorPainter(image = image), contentDescription = title)
+            }
 //            Box(modifier = Modifier.padding(8.dp)) {
 //                Image(painter = rememberVectorPainter(image = image), contentDescription = title)
 //            }

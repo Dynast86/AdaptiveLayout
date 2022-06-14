@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+
 package com.dynast.compose
 
 import android.os.Bundle
@@ -8,12 +10,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.window.layout.FoldingFeature
@@ -70,9 +74,9 @@ class MainActivity : ComponentActivity() {
 
                     MainScreen(
                         uiState = uiState,
-                        windowSizeClass = windowSizeClass.widthSizeClass,
+                        windowSizeClass = windowSizeClass,
                         devicePosture = devicePosture,
-                        viewModel = viewModel,
+//                        viewModel = viewModel,
                     )
                 }
             }
@@ -80,13 +84,14 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true)
+
+@Preview(showBackground = true, widthDp = 320)
 @Composable
 fun AppPreview() {
     ComposeTheme {
         MainScreen(
             uiState = HomeUIState(courseCard = emptyList()),
-            windowSizeClass = WindowWidthSizeClass.Compact,
+            windowSizeClass = WindowSizeClass.calculateFromSize(size = DpSize(width = 320.dp, height = 480.dp)),
             devicePosture = DevicePosture.NormalPosture,
         )
     }
@@ -98,7 +103,7 @@ fun AppPreviewTablet() {
     ComposeTheme {
         MainScreen(
             uiState = HomeUIState(courseCard = emptyList()),
-            windowSizeClass = WindowWidthSizeClass.Medium,
+            windowSizeClass = WindowSizeClass.calculateFromSize(size = DpSize(width = 700.dp, height = 480.dp)),
             devicePosture = DevicePosture.NormalPosture,
         )
     }
@@ -110,7 +115,7 @@ fun AppPreviewDesktop() {
     ComposeTheme {
         MainScreen(
             uiState = HomeUIState(courseCard = emptyList()),
-            windowSizeClass = WindowWidthSizeClass.Expanded,
+            windowSizeClass = WindowSizeClass.calculateFromSize(size = DpSize(width = 1024.dp, height = 480.dp)),
             devicePosture = DevicePosture.NormalPosture,
         )
     }

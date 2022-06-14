@@ -65,14 +65,13 @@ fun TopAppBarScreen(
                     .padding(horizontal = 12.dp, vertical = 12.dp)
                     .height(24.dp),
                 badge = {
-                    Badge(
-//                        content = { Text(text = "15") }
-                    )
-                },
-                content = {
-                    Image(imageVector = Icons.Outlined.Notifications, contentDescription = null)
+                    Badge {
+//                        Text(text = "15")
+                    }
                 }
-            )
+            ) {
+                Image(imageVector = Icons.Outlined.Notifications, contentDescription = null)
+            }
         })
 }
 

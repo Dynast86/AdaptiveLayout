@@ -28,6 +28,7 @@ fun LoginSheet(
     val scope = rememberCoroutineScope()
 
     ModalBottomSheetLayout(
+//        layout_behavior
         sheetState = state,
         sheetShape = bottomShape,
         sheetContent = {
@@ -41,9 +42,8 @@ fun LoginSheet(
                 },
                 onJoinClicked = {}
             )
-        },
-        content = {}
-    )
+        }
+    ) {}
 }
 
 @Composable

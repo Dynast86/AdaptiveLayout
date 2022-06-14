@@ -9,10 +9,8 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.dynast.compose.MainViewModel
 import com.dynast.compose.ui.components.main.BottomItems
 import com.dynast.compose.ui.components.main.items
 import com.dynast.compose.ui.theme.ComposeTheme
@@ -21,8 +19,7 @@ import com.dynast.compose.ui.theme.ComposeTheme
 fun NavBar(
     navController: NavController,
     items: List<BottomItems>,
-    onClick: (BottomItems) -> Unit,
-    viewModel: MainViewModel = hiltViewModel()
+    onClick: (BottomItems) -> Unit
 ) {
     NavigationBar(
         modifier = Modifier.windowInsetsPadding(
@@ -32,10 +29,7 @@ fun NavBar(
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
-            val selected = if (currentRoute == item.route) {
-                viewModel.setTopBarTitle(item.title)
-                true
-            } else false
+            val selected = currentRoute == item.route
             NavigationBarItem(
                 selected = selected,
                 onClick = { onClick(item) },
