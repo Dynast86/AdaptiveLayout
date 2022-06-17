@@ -88,7 +88,6 @@ fun TopAppBarScreen(
 @Composable
 fun FreeScreenPreview() {
     ComposeTheme {
-        val viewModel = hiltViewModel<MainViewModel>()
-        TopAppBarScreen(viewModel = viewModel)
+        TopAppBarScreen()
     }
 }

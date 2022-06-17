@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -24,7 +25,7 @@ sealed class BottomItems(val image: ImageVector, val title: String, val route: S
     object MyClass : BottomItems(Icons.Filled.Favorite, "나의강의실", "MyClass")
     object Solve : BottomItems(Icons.Filled.Email, "딱풀", "Solve")
     object Free : BottomItems(Icons.Filled.Place, "무료특강", "Free")
-    object MyPage : BottomItems(Icons.Filled.Notifications, "마이페이지", "MyPage")
+    object MyPage : BottomItems(Icons.Outlined.Notifications, "마이페이지", "MyPage")
     object More : BottomItems(Icons.Filled.Favorite, "더보기", "More")
 }
 

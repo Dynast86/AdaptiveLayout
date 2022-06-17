@@ -58,6 +58,7 @@ fun NavBarPreview() {
 
             items.forEachIndexed { index, s ->
                 NavigationBarItem(
+                    alwaysShowLabel = false,
                     selected = selectedItem == index,
                     onClick = { selectedItem = index },
                     icon = { Icon(imageVector = s.image, contentDescription = null) },
